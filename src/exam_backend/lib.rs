@@ -60,7 +60,22 @@ fn insert_participation(key: u64, value: u64) -> Option<u64> {
 
 #[ic_cdk_macros::update]
 fn update_exam(key: u64, new_exam_details: Exam) -> Option<Exam> {
-    // Your code will go here to update an exam's details based on the provided key and new exam information.
+    EXAM_MAP.with(|exam_map| {
+        // Retrieve the existing exam associated with the provided key.
+        if let Some(existing_exam) = exam_map.borrow_mut().get_mut(&key) {
+            // Update the fields of the exam with the information from new_exam_details.
+            existing_exam.out_of = new_exam_details.out_of;
+            existing_exam.course = new_exam_details.course;
+            existing_exam.curve = new_exam_details.curve;
+
+            // Save the updated exam back into the storage.
+            Some(existing_exam.clone()) // Returning the updated exam for confirmation or further use.
+        } else {
+            None // Key not found, return None
+        }
+    })
+}
+
 
     
     

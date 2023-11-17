@@ -9,3 +9,9 @@ service : {
     "insert_exam": (nat64, Exam) -> (opt Exam);
     "insert_participation": (nat64, nat64) -> (opt nat64);
 }
+
+service : ExamService {
+  // ... Other existing methods ...
+
+  public update_exam : (key: Nat, new_exam_details: Exam) -> (Option Exam);
+};
